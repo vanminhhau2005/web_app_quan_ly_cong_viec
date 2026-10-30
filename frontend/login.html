@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="description" content="Đăng nhập để quản lý và đồng bộ công việc của bạn">
+    <title>Đăng nhập · Việc cần làm</title>
+    <link rel="manifest" href="manifest.json?v=3">
+    <link rel="icon" href="images/icon.svg?v=2" type="image/svg+xml">
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section id="authView" class="auth-view">
+        <div class="auth-art">
+            <a class="auth-brand" href="index.html"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span> Việc cần làm</a>
+            <div class="auth-art-copy">
+                <span class="eyebrow">KHÔNG GIAN CỦA RIÊNG BẠN</span>
+                <h1>Nhẹ đầu hơn.<br>Hoàn thành nhiều hơn.</h1>
+                <p>Sắp xếp công việc, đặt mục tiêu và tiếp tục ngay cả khi bạn ngoại tuyến.</p>
+                <div class="auth-art-note"><span>✦</span> Tập trung vào điều quan trọng hôm nay</div>
+            </div>
+            <div class="auth-orb orb-one"></div>
+            <div class="auth-orb orb-two"></div>
+        </div>
+        <div class="auth-panel">
+            <div class="auth-card">
+                <span class="eyebrow">CHÀO MỪNG BẠN</span>
+                <h2 id="authTitle">Đăng nhập</h2>
+                <p id="authSubtitle" class="muted-copy">Tiếp tục hành trình hoàn thành mục tiêu của bạn.</p>
+                <form id="authForm">
+                    <label id="nameField" class="field-label d-none" for="authName">Tên của bạn</label>
+                    <input id="authName" class="form-control d-none" type="text" maxlength="80" autocomplete="name" placeholder="Nguyễn Minh">
+                    <label class="field-label" for="authEmail">Email</label>
+                    <input id="authEmail" class="form-control" type="email" maxlength="254" autocomplete="email" required placeholder="ban@email.com">
+                    <label class="field-label" for="authPassword">Mật khẩu</label>
+                    <input id="authPassword" class="form-control" type="password" minlength="8" autocomplete="current-password" required placeholder="Ít nhất 8 ký tự">
+                    <div id="authError" class="form-message" role="status" aria-live="polite"></div>
+                    <button id="authSubmit" class="btn primary-button w-100" type="submit">Đăng nhập</button>
+                </form>
+                <p class="auth-switch"><span id="authSwitchText">Chưa có tài khoản?</span>
+                    <button id="authSwitch" type="button">Tạo tài khoản</button>
+                </p>
+                <p class="auth-footnote">Tài khoản được đồng bộ qua máy chủ của bạn.</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/storage.js"></script>
+    <script src="js/core.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker.register("./service-worker.js")
+                    .catch(function (error) { console.error("Không thể đăng ký Service Worker:", error); });
+            });
+        }
+    </script>
+</body>
+</html>

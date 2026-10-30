@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="2520" viewBox="0 0 1920 2520" role="img" aria-labelledby="title description">
+  <title id="title">Sơ đồ kiến trúc và hoạt động PWA quản lý công việc</title>
+  <desc id="description">Sơ đồ luồng từ giao diện PWA qua lưu trữ cục bộ, Service Worker, API Express đến MariaDB; kèm chức năng từng file frontend và backend.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6f7fc"/>
+      <stop offset="1" stop-color="#edf0ff"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5145cd"/>
+      <stop offset="1" stop-color="#7668f0"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#1e2450" flood-opacity=".10"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#6770a8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#239875"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #202744; }
+      .title { font-size: 39px; font-weight: 750; fill: #fff; }
+      .subtitle { font-size: 19px; fill: #ecebff; }
+      .section { font-size: 26px; font-weight: 750; }
+      .lane-title { font-size: 18px; font-weight: 700; fill: #fff; }
+      .card-title { font-size: 18px; font-weight: 700; }
+      .body { font-size: 15px; fill: #4d5676; }
+      .small { font-size: 13px; fill: #5e6681; }
+      .mono { font-family: Consolas, "Courier New", monospace; font-size: 14px; fill: #30395e; }
+      .card { fill: #fff; stroke: #e3e7f3; stroke-width: 1.5; }
+      .connector { fill: none; stroke: #6770a8; stroke-width: 3; marker-end: url(#arrow); }
+      .offline-connector { fill: none; stroke: #239875; stroke-width: 3; stroke-dasharray: 9 7; marker-end: url(#arrowGreen); }
+      .rule { stroke: #e7eaf3; stroke-width: 1.4; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="2520" fill="url(#background)"/>
+  <rect width="1920" height="145" fill="url(#header)"/>
+  <text x="64" y="66" class="title">KIẾN TRÚC PWA QUẢN LÝ CÔNG VIỆC</text>
+  <text x="66" y="107" class="subtitle">Luồng dữ liệu online/offline · đồng bộ · chức năng từng tệp mã nguồn</text>
+  <rect x="1570" y="42" width="285" height="54" rx="27" fill="#fff" opacity=".17"/>
+  <text x="1712" y="76" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">FRONTEND · API · MARIADB</text>
+
+  <text x="64" y="197" class="section">1. Sơ đồ kiến trúc và luồng hoạt động</text>
+  <text x="64" y="226" class="body">Dữ liệu được thao tác và lưu tại trình duyệt trước; khi có kết nối, hàng đợi được gửi lên API để cập nhật máy chủ.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="64" y="258" width="330" height="540" rx="20" class="card"/>
+    <path d="M84 258h290a20 20 0 0 1 20 20v42H64v-42a20 20 0 0 1 20-20" fill="#6558e8"/>
+    <text x="86" y="294" class="lane-title">1 · Người dùng / giao diện</text>
+    <text x="88" y="354" class="card-title">Các trang PWA</text>
+    <text x="88" y="385" class="mono">login.html</text>
+    <text x="88" y="406" class="small">Đăng nhập và tạo tài khoản</text>
+    <text x="88" y="443" class="mono">index.html</text>
+    <text x="88" y="464" class="small">Tổng quan, thời tiết, lịch, thống kê</text>
+    <text x="88" y="501" class="mono">add.html</text>
+    <text x="88" y="522" class="small">Tạo công việc mới</text>
+    <text x="88" y="559" class="mono">tasks.html</text>
+    <text x="88" y="580" class="small">Tìm, lọc, sửa và hoàn thành</text>
+    <text x="88" y="617" class="mono">sync.html</text>
+    <text x="88" y="638" class="small">Xem trạng thái chờ/đã đồng bộ</text>
+    <line x1="88" y1="665" x2="370" y2="665" class="rule"/>
+    <text x="88" y="699" class="card-title">Giao diện chung</text>
+    <text x="88" y="727" class="small">style.css · Bootstrap · biểu tượng SVG</text>
+    <text x="88" y="756" class="small">Tương thích desktop và điện thoại</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="430" y="258" width="365" height="540" rx="20" class="card"/>
+    <path d="M450 258h325a20 20 0 0 1 20 20v42H430v-42a20 20 0 0 1 20-20" fill="#2879c7"/>
+    <text x="452" y="294" class="lane-title">2 · Logic và lưu trữ thiết bị</text>
+    <text x="454" y="354" class="mono">js/core.js</text>
+    <text x="454" y="379" class="small">Sự kiện, giao diện, công việc, auth,</text>
+    <text x="454" y="400" class="small">thông báo và đồng bộ API</text>
+    <text x="454" y="440" class="mono">js/storage.js</text>
+    <text x="454" y="465" class="small">Đọc/ghi IndexedDB và hàng đợi</text>
+    <rect x="454" y="490" width="317" height="111" rx="13" fill="#edf4ff"/>
+    <text x="472" y="520" font-size="15" font-weight="700" fill="#315f9a">INDEXEDDB</text>
+    <text x="472" y="547" class="small">congViec · công việc trên máy</text>
+    <text x="472" y="570" class="small">syncQueue · thay đổi cần gửi</text>
+    <text x="472" y="591" class="small">syncState · phiên và khóa đồng bộ</text>
+    <rect x="454" y="617" width="317" height="78" rx="13" fill="#f2efff"/>
+    <text x="472" y="646" font-size="15" font-weight="700" fill="#5145cd">LOCALSTORAGE</text>
+    <text x="472" y="672" class="small">Phiên đăng nhập, giao diện, nhắc việc</text>
+    <text x="454" y="741" class="small">Ghi local trước để dùng tiếp khi mất mạng</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="830" y="258" width="330" height="540" rx="20" class="card"/>
+    <path d="M850 258h290a20 20 0 0 1 20 20v42H830v-42a20 20 0 0 1 20-20" fill="#159879"/>
+    <text x="852" y="294" class="lane-title">3 · PWA / Service Worker</text>
+    <text x="854" y="354" class="mono">service-worker.js</text>
+    <text x="854" y="382" class="small">Cache trang và tài nguyên giao diện</text>
+    <text x="854" y="405" class="small">Network-first; lỗi mạng thì dùng cache</text>
+    <text x="854" y="444" class="small">Background Sync gửi hàng đợi khi có mạng</text>
+    <text x="854" y="490" class="mono">manifest.json</text>
+    <text x="854" y="517" class="small">Tên, icon, màu và cách mở ứng dụng</text>
+    <rect x="854" y="548" width="282" height="112" rx="14" fill="#edf8f4"/>
+    <text x="873" y="580" font-size="16" font-weight="700" fill="#167c5b">KHI NGOẠI TUYẾN</text>
+    <text x="873" y="610" class="small">Mở trang đã cache, tiếp tục thao tác</text>
+    <text x="873" y="633" class="small">và lưu thay đổi vào IndexedDB</text>
+    <text x="854" y="704" class="small">Cài lên màn hình chính qua trình duyệt</text>
+    <text x="854" y="738" class="small">Đăng nhập mới vẫn cần máy chủ và Internet</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1195" y="258" width="365" height="540" rx="20" class="card"/>
+    <path d="M1215 258h325a20 20 0 0 1 20 20v42h-365v-42a20 20 0 0 1 20-20" fill="#e59a28"/>
+    <text x="1217" y="294" class="lane-title">4 · Backend / REST API</text>
+    <text x="1219" y="354" class="mono">backend/server.js</text>
+    <text x="1219" y="380" class="small">Express, CORS, JSON, routes, kiểm tra DB</text>
+    <text x="1219" y="403" class="small">khởi tạo bảng và mở cổng 3000</text>
+    <text x="1219" y="446" class="mono">/api/auth</text>
+    <text x="1219" y="470" class="small">Đăng ký · đăng nhập · phiên · đăng xuất</text>
+    <text x="1219" y="512" class="mono">/api/tasks</text>
+    <text x="1219" y="536" class="small">GET danh sách · PUT đồng bộ từng việc</text>
+    <text x="1219" y="578" class="mono">requireAuth.js + controllers</text>
+    <text x="1219" y="602" class="small">Xác thực Bearer token, kiểm tra dữ liệu</text>
+    <rect x="1219" y="632" width="317" height="91" rx="13" fill="#fff5e7"/>
+    <text x="1237" y="662" font-size="15" font-weight="700" fill="#9b6716">ĐỒNG BỘ CÓ KIỂM SOÁT</text>
+    <text x="1237" y="689" class="small">Version · phát hiện xung đột · trả JSON</text>
+    <text x="1219" y="755" class="small">Kết nối MariaDB qua pool trong database.js</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1595" y="258" width="260" height="540" rx="20" class="card"/>
+    <path d="M1615 258h220a20 20 0 0 1 20 20v42h-260v-42a20 20 0 0 1 20-20" fill="#46506f"/>
+    <text x="1617" y="294" class="lane-title">5 · MariaDB</text>
+    <text x="1619" y="358" class="mono">nguoi_dung</text>
+    <text x="1619" y="382" class="small">Tài khoản và mật khẩu băm</text>
+    <text x="1619" y="428" class="mono">phien_dang_nhap</text>
+    <text x="1619" y="452" class="small">Token hash và hạn phiên</text>
+    <text x="1619" y="498" class="mono">cong_viec_dong_bo</text>
+    <text x="1619" y="522" class="small">Công việc, trạng thái, phiên bản</text>
+    <line x1="1619" y1="550" x2="1830" y2="550" class="rule"/>
+    <text x="1619" y="585" class="card-title">Ghi chú</text>
+    <text x="1619" y="615" class="small">API công việc theo tài khoản</text>
+    <text x="1619" y="638" class="small">lưu trong cong_viec_dong_bo</text>
+    <text x="1619" y="683" class="small">Cấu hình DB đọc từ .env</text>
+    <text x="1619" y="713" class="small">Không đưa giá trị bí mật</text>
+    <text x="1619" y="736" class="small">của .env vào sơ đồ</text>
+  </g>
+
+  <path d="M394 510h26" class="connector"/>
+  <path d="M795 510h26" class="offline-connector"/>
+  <path d="M1160 510h26" class="connector"/>
+  <path d="M1560 510h26" class="connector"/>
+  <text x="407" y="489" text-anchor="middle" class="small">thao tác</text>
+  <text x="808" y="489" text-anchor="middle" class="small">lưu local</text>
+  <text x="1173" y="489" text-anchor="middle" class="small">có mạng</text>
+  <text x="1573" y="489" text-anchor="middle" class="small">SQL</text>
+  <path d="M1395 770 C1250 844 730 844 575 770" class="connector"/>
+  <text x="985" y="835" text-anchor="middle" class="small">API trả dữ liệu → cập nhật IndexedDB / giao diện; version giúp phát hiện xung đột</text>
+
+  <rect x="64" y="865" width="880" height="132" rx="18" fill="#eaf7f2" stroke="#cceade"/>
+  <text x="90" y="902" font-size="19" font-weight="700" fill="#167c5b">MẤT KẾT NỐI</text>
+  <text x="90" y="934" class="body">Service Worker phục vụ giao diện đã cache → thao tác được ghi vào IndexedDB</text>
+  <text x="90" y="962" class="body">→ syncQueue giữ thay đổi → ứng dụng tiếp tục dùng dữ liệu cục bộ.</text>
+  <rect x="976" y="865" width="880" height="132" rx="18" fill="#eef0ff" stroke="#d9dcfa"/>
+  <text x="1002" y="902" font-size="19" font-weight="700" fill="#5145cd">CÓ KẾT NỐI TRỞ LẠI</text>
+  <text x="1002" y="934" class="body">core.js / Background Sync gửi hàng đợi → API xác thực và kiểm tra version</text>
+  <text x="1002" y="962" class="body">→ MariaDB lưu → ứng dụng nhận bản mới và cập nhật kho cục bộ.</text>
+
+  <text x="64" y="1068" class="section">2. Cấu trúc dự án và chức năng từng tệp</text>
+  <text x="64" y="1098" class="body">Liệt kê mã nguồn và cấu hình do dự án quản lý; node_modules được lược bỏ vì chỉ chứa thư viện đã cài.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="64" y="1130" width="575" height="1240" rx="20" class="card"/>
+    <path d="M84 1130h535a20 20 0 0 1 20 20v40H64v-40a20 20 0 0 1 20-20" fill="#6558e8"/>
+    <text x="90" y="1170" class="lane-title">A · ROOT + FRONTEND PWA</text>
+    <text x="90" y="1215" class="mono">launcher.html</text>
+    <text x="90" y="1238" class="body">Trang chuyển tiếp vào frontend/index.html.</text>
+    <text x="90" y="1280" class="mono">frontend/index.html</text>
+    <text x="90" y="1303" class="body">Tổng quan, thống kê, lịch và thời tiết.</text>
+    <text x="90" y="1345" class="mono">frontend/login.html</text>
+    <text x="90" y="1368" class="body">Giao diện đăng nhập / tạo tài khoản.</text>
+    <text x="90" y="1410" class="mono">frontend/add.html</text>
+    <text x="90" y="1433" class="body">Biểu mẫu tạo công việc riêng.</text>
+    <text x="90" y="1475" class="mono">frontend/tasks.html</text>
+    <text x="90" y="1498" class="body">Danh sách, tìm kiếm, bộ lọc và thao tác việc.</text>
+    <text x="90" y="1540" class="mono">frontend/sync.html</text>
+    <text x="90" y="1563" class="body">Xem các việc chờ gửi / đã đồng bộ.</text>
+    <text x="90" y="1605" class="mono">frontend/js/core.js</text>
+    <text x="90" y="1628" class="body">Logic UI, đăng nhập, CRUD, API, lịch/thời tiết,</text>
+    <text x="90" y="1650" class="body">thông báo, kết nối và đồng bộ/xung đột.</text>
+    <text x="90" y="1692" class="mono">frontend/js/storage.js</text>
+    <text x="90" y="1715" class="body">IndexedDB: công việc, hàng đợi và trạng thái sync.</text>
+    <text x="90" y="1757" class="mono">frontend/css/style.css</text>
+    <text x="90" y="1780" class="body">Màu sắc, bố cục, responsive, theme và hiệu ứng.</text>
+    <text x="90" y="1822" class="mono">frontend/service-worker.js</text>
+    <text x="90" y="1845" class="body">Cache, fallback offline và Background Sync.</text>
+    <text x="90" y="1887" class="mono">frontend/manifest.json</text>
+    <text x="90" y="1910" class="body">Tên, icon, màu và chế độ cài/chạy PWA.</text>
+    <text x="90" y="1952" class="mono">frontend/images/icon.svg</text>
+    <text x="90" y="1975" class="body">Biểu tượng ứng dụng dùng trong PWA.</text>
+    <text x="90" y="2017" class="mono">frontend/vendor/bootstrap.min.css</text>
+    <text x="90" y="2040" class="body">Bootstrap CSS được lưu cục bộ.</text>
+    <text x="90" y="2082" class="mono">frontend/package.json</text>
+    <text x="90" y="2105" class="body">Phụ thuộc và lệnh chạy máy chủ tĩnh.</text>
+    <text x="90" y="2147" class="mono">frontend/package-lock.json</text>
+    <text x="90" y="2170" class="body">Khóa phiên bản phụ thuộc frontend.</text>
+    <line x1="90" y1="2200" x2="613" y2="2200" class="rule"/>
+    <text x="90" y="2234" class="small">Trang app dùng chung js/core.js và js/storage.js;</text>
+    <text x="90" y="2257" class="small">assets giao diện được khai báo trong Service Worker.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="672" y="1130" width="575" height="1240" rx="20" class="card"/>
+    <path d="M692 1130h535a20 20 0 0 1 20 20v40H672v-40a20 20 0 0 1 20-20" fill="#e59a28"/>
+    <text x="698" y="1170" class="lane-title">B · BACKEND EXPRESS</text>
+    <text x="698" y="1215" class="mono">backend/server.js</text>
+    <text x="698" y="1238" class="body">Tạo app, middleware, routes, bảng và mở API.</text>
+    <text x="698" y="1280" class="mono">backend/config/database.js</text>
+    <text x="698" y="1303" class="body">MySQL/MariaDB pool lấy cấu hình từ môi trường.</text>
+    <text x="698" y="1345" class="mono">backend/routes/authRoutes.js</text>
+    <text x="698" y="1368" class="body">Định tuyến đăng ký, đăng nhập, me và logout.</text>
+    <text x="698" y="1410" class="mono">backend/controllers/authController.js</text>
+    <text x="698" y="1433" class="body">Kiểm tra tài khoản, băm mật khẩu, tạo/xóa phiên.</text>
+    <text x="698" y="1475" class="mono">backend/middleware/requireAuth.js</text>
+    <text x="698" y="1498" class="body">Xác thực Bearer token cho API riêng tư.</text>
+    <text x="698" y="1540" class="mono">backend/routes/taskRoutes.js</text>
+    <text x="698" y="1563" class="body">Bảo vệ và định tuyến API đồng bộ /api/tasks.</text>
+    <text x="698" y="1605" class="mono">backend/controllers/taskController.js</text>
+    <text x="698" y="1628" class="body">Tải/lưu công việc, kiểm tra version và xung đột.</text>
+    <text x="698" y="1800" class="mono">backend/package.json</text>
+    <text x="698" y="1823" class="body">Express, CORS, mysql2, dotenv và lệnh dev.</text>
+    <text x="698" y="1865" class="mono">backend/package-lock.json</text>
+    <text x="698" y="1888" class="body">Khóa phiên bản phụ thuộc backend.</text>
+    <text x="698" y="1930" class="mono">backend/.env</text>
+    <text x="698" y="1953" class="body">Cấu hình kết nối và biến môi trường;</text>
+    <text x="698" y="1975" class="body">không đưa giá trị nhạy cảm vào sơ đồ.</text>
+    <line x1="698" y1="2010" x2="1221" y2="2010" class="rule"/>
+    <text x="698" y="2044" class="card-title">Điểm vào backend</text>
+    <text x="698" y="2074" class="body">npm run dev → node server.js → cổng 3000</text>
+    <text x="698" y="2108" class="small">server.js tự tạo/kiểm tra các bảng tài khoản,</text>
+    <text x="698" y="2131" class="small">phiên và cong_viec_dong_bo khi khởi động.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1280" y="1130" width="576" height="1240" rx="20" class="card"/>
+    <path d="M1300 1130h536a20 20 0 0 1 20 20v40h-576v-40a20 20 0 0 1 20-20" fill="#46506f"/>
+    <text x="1306" y="1170" class="lane-title">C · API, DỮ LIỆU VÀ CÁCH CHẠY</text>
+    <text x="1306" y="1215" class="card-title">API chính của PWA</text>
+    <text x="1306" y="1250" class="mono">POST /api/auth/register</text>
+    <text x="1306" y="1274" class="mono">POST /api/auth/login</text>
+    <text x="1306" y="1298" class="mono">GET /api/auth/me · POST /logout</text>
+    <text x="1306" y="1332" class="mono">GET /api/tasks</text>
+    <text x="1306" y="1356" class="mono">PUT /api/tasks/:clientId</text>
+    <text x="1306" y="1386" class="small">JSON qua HTTP · Bearer token · CORS</text>
+    <line x1="1306" y1="1414" x2="1830" y2="1414" class="rule"/>
+    <text x="1306" y="1450" class="card-title">Đồng bộ xóa đa thiết bị</text>
+    <text x="1306" y="1484" class="mono">DELETE /api/tasks/:clientId</text>
+    <text x="1306" y="1508" class="small">API có xác thực theo tài khoản.</text>
+    <text x="1306" y="1532" class="small">Giữ dấu xóa để thiết bị khác cập nhật.</text>
+    <line x1="1306" y1="1560" x2="1830" y2="1560" class="rule"/>
+    <text x="1306" y="1596" class="card-title">Dữ liệu được lưu ở đâu?</text>
+    <rect x="1306" y="1616" width="524" height="139" rx="14" fill="#edf4ff"/>
+    <text x="1324" y="1648" class="mono">Trên trình duyệt · IndexedDB</text>
+    <text x="1324" y="1677" class="small">congViec · syncQueue · syncState</text>
+    <text x="1324" y="1705" class="small">localStorage giữ phiên và tùy chọn giao diện.</text>
+    <rect x="1306" y="1772" width="524" height="171" rx="14" fill="#f1efff"/>
+    <text x="1324" y="1804" class="mono">Trên máy chủ · MariaDB</text>
+    <text x="1324" y="1833" class="small">nguoi_dung · phien_dang_nhap</text>
+    <text x="1324" y="1861" class="small">cong_viec_dong_bo · công việc sync chính</text>
+    <text x="1324" y="1889" class="small">deleted=true · dấu xóa phục vụ đồng bộ</text>
+    <line x1="1306" y1="1971" x2="1830" y2="1971" class="rule"/>
+    <text x="1306" y="2008" class="card-title">Khởi chạy phát triển</text>
+    <text x="1306" y="2043" class="mono">Frontend · localhost:5500</text>
+    <text x="1306" y="2070" class="small">npm start trong frontend/ (máy chủ tĩnh)</text>
+    <text x="1306" y="2106" class="mono">Backend · localhost:3000</text>
+    <text x="1306" y="2133" class="small">npm run dev trong backend/</text>
+    <text x="1306" y="2180" class="small">node_modules không liệt kê: thư viện cài từ</text>
+    <text x="1306" y="2202" class="small">package.json và package-lock.json.</text>
+    <text x="1306" y="2250" class="small">Không chia sẻ giá trị bí mật trong backend/.env.</text>
+  </g>
+
+  <rect x="64" y="2410" width="1792" height="54" rx="16" fill="#e4e7f3"/>
+  <text x="90" y="2444" class="small">Luồng chính: frontend → IndexedDB/syncQueue → Express API → MariaDB → phản hồi đồng bộ về thiết bị. Offline tiếp tục làm việc với dữ liệu đã lưu cục bộ.</text>
+</svg>

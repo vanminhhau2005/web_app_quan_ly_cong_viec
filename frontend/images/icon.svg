@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2aa897"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#d9f3ed"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#134e4a" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="132" fill="url(#background)"/>
+  <circle cx="390" cy="112" r="110" fill="#fff" fill-opacity=".08"/>
+  <circle cx="104" cy="422" r="150" fill="#2bd0b4" fill-opacity=".12"/>
+  <rect x="104" y="104" width="304" height="304" rx="88" fill="#fff" fill-opacity=".16"
+        stroke="#fff" stroke-opacity=".2" stroke-width="3"/>
+  <path d="m163 260 62 62 126-134" fill="none" filter="url(#shadow)"
+        stroke="url(#mark)" stroke-linecap="round" stroke-linejoin="round" stroke-width="38"/>
+  <path d="m365 134 9 20 20 9-20 9-9 20-9-20-20-9 20-9z" fill="#ffe28a"/>
+</svg>

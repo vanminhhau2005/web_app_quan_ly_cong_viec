@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="description" content="Thêm công việc mới vào danh sách cá nhân">
+    <title>Thêm công việc · Việc cần làm</title>
+    <link rel="manifest" href="manifest.json?v=3">
+    <link rel="icon" href="images/icon.svg?v=2" type="image/svg+xml">
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="appView">
+        <header class="app-navbar">
+            <div class="nav-inner">
+                <a class="navbar-brand" href="index.html"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span> Việc cần làm</a>
+                <nav id="mainNavigation" class="top-menu" aria-label="Menu chính">
+                    <a class="menu-link" href="index.html" aria-label="Tổng quan"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg></span><span class="nav-label-full">Tổng quan</span><span class="nav-label-mobile">Tổng quan</span></a>
+                    <a class="menu-link active" href="add.html" aria-label="Thêm công việc" aria-current="page"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><span class="nav-label-full">Thêm công việc</span><span class="nav-label-mobile">Thêm việc</span></a>
+                    <a class="menu-link" href="tasks.html" aria-label="Danh sách công việc"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span class="nav-label-full">Danh sách công việc</span><span class="nav-label-mobile">Danh sách</span></a>
+                    <a class="menu-link" href="sync.html" aria-label="Đồng bộ"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg></span><span class="nav-label-full">Đồng bộ</span><span class="nav-label-mobile">Đồng bộ</span></a>
+                </nav>
+                <div class="nav-tools">
+                    <span id="trangThaiMang" class="network-status"><span class="status-dot"></span> Online</span>
+                    <div class="notification-wrapper">
+                        <button id="taskNotificationButton" class="icon-button notification-button" type="button" aria-label="Nhắc việc chưa hoàn thành" aria-expanded="false" aria-controls="taskNotificationPanel">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg>
+                            <span id="taskNotificationCount" class="notification-count" hidden></span>
+                        </button>
+                        <section id="taskNotificationPanel" class="notification-panel" aria-label="Công việc chưa hoàn thành" hidden>
+                            <div class="notification-heading"><strong>Việc cần hoàn thành</strong><span id="taskNotificationSummary"></span></div>
+                            <ul id="taskNotificationList" class="notification-list"></ul>
+                            <a class="notification-all-link" href="tasks.html?status=open">Xem tất cả công việc chưa xong</a>
+                        </section>
+                    </div>
+                    <button id="themeButton" class="icon-button" type="button" aria-label="Đổi giao diện" title="Đổi giao diện"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.5 8.5 0 1 0 20.2 15.1Z"/></svg></button>
+                    <button id="installButton" class="icon-button install-button d-none" type="button" aria-label="Cài ứng dụng" title="Cài ứng dụng"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg></button>
+                    <div class="account-menu"><span id="accountName" class="account-name"></span><button id="logoutButton" class="logout-button" type="button">Đăng xuất</button></div>
+                </div>
+            </div>
+        </header>
+        <main class="container app-shell">
+            <section class="welcome-row">
+                <div>
+                    <span class="eyebrow">GHI LẠI · SẮP XẾP · THỰC HIỆN</span>
+                    <h1>Thêm công việc</h1>
+                    <p class="hero-subtitle">Công việc được lưu trên thiết bị và tự đồng bộ khi có mạng.</p>
+                </div>
+                <a class="btn btn-light" href="tasks.html">Xem danh sách →</a>
+            </section>
+
+            <div id="trangThaiDongBo" class="sync-alert" role="status" aria-live="polite">
+                <span class="sync-alert-icon">↯</span><span id="syncMessage">Dữ liệu được lưu an toàn trên thiết bị.</span>
+            </div>
+
+            <section class="card app-card add-card">
+                <div class="card-body add-card-body">
+                    <div class="section-heading">
+                        <span class="section-icon add-section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14"/></svg></span>
+                        <div><h2 class="card-title">Thông tin công việc</h2><small class="text-muted">Các trường có dấu * là bắt buộc</small></div>
+                    </div>
+                    <form id="taskForm">
+                        <div class="add-field">
+                            <label class="field-label" for="congViec">Tên công việc <span class="required-mark">*</span></label>
+                            <input id="congViec" class="form-control task-title-input" type="text" maxlength="1000" placeholder="Ví dụ: Hoàn thành báo cáo..." autocomplete="off" required>
+                        </div>
+                        <div class="add-field">
+                            <label class="field-label" for="taskDescription">Mô tả <span class="optional-mark">(không bắt buộc)</span></label>
+                            <textarea id="taskDescription" class="form-control task-description-input" maxlength="5000" rows="3" placeholder="Thêm ghi chú hoặc các bước cần làm..."></textarea>
+                        </div>
+                        <div class="task-fields add-task-fields">
+                            <div class="add-field"><label class="field-label" for="taskCategory">Phân loại</label>
+                                <select id="taskCategory" class="form-select">
+                                    <option value="Cá nhân">Cá nhân</option><option value="Công việc">Công việc</option><option value="Học tập">Học tập</option><option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                            <div class="add-field"><label class="field-label" for="taskDueDate">Hạn hoàn thành</label><input id="taskDueDate" class="form-control" type="date"></div>
+                        </div>
+                        <label class="reminder-toggle add-reminder-toggle"><input id="taskReminder" type="checkbox"><span class="toggle-track"></span><span><strong>Nhắc tôi vào ngày đến hạn</strong><small>Hiện thông báo trên thiết bị này</small></span></label>
+                        <button class="btn primary-button w-100 add-task-submit" type="submit"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14"/></svg> Lưu công việc</button>
+                    </form>
+                </div>
+            </section>
+            <footer class="app-footer"><span>✦ Một việc một lúc là đủ tốt rồi.</span><button id="notificationButton" type="button">Bật thông báo nhắc việc</button></footer>
+        </main>
+    </div>
+    <div id="toast" class="toast-message" role="status" aria-live="polite"></div>
+    <script src="js/storage.js"></script>
+    <script src="js/core.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker.register("./service-worker.js")
+                    .catch(function (error) { console.error("Không thể đăng ký Service Worker:", error); });
+            });
+        }
+    </script>
+</body>
+</html>

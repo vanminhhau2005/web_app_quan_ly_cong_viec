@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="description" content="Ứng dụng quản lý công việc offline, đồng bộ an toàn giữa các thiết bị">
+    <title>Việc cần làm · PWA</title>
+    <link rel="manifest" href="manifest.json?v=3">
+    <link rel="icon" href="images/icon.svg?v=2" type="image/svg+xml">
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="appView">
+        <header class="app-navbar">
+            <div class="nav-inner">
+                <a class="navbar-brand" href="index.html#overview"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span> Việc cần làm</a>
+                <nav id="mainNavigation" class="top-menu" aria-label="Menu chính">
+                    <a class="menu-link active" href="index.html#overview" aria-label="Tổng quan" aria-current="page"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg></span><span class="nav-label-full">Tổng quan</span><span class="nav-label-mobile">Tổng quan</span></a>
+                    <a class="menu-link" href="add.html" aria-label="Thêm công việc"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><span class="nav-label-full">Thêm công việc</span><span class="nav-label-mobile">Thêm việc</span></a>
+                    <a class="menu-link" href="tasks.html" aria-label="Danh sách công việc"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span class="nav-label-full">Danh sách công việc</span><span class="nav-label-mobile">Danh sách</span></a>
+                    <a class="menu-link" href="sync.html" aria-label="Đồng bộ"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg></span><span class="nav-label-full">Đồng bộ</span><span class="nav-label-mobile">Đồng bộ</span></a>
+                </nav>
+                <div class="nav-tools">
+                    <span id="trangThaiMang" class="network-status"><span class="status-dot"></span> Online</span>
+                    <div class="notification-wrapper">
+                        <button id="taskNotificationButton" class="icon-button notification-button" type="button" aria-label="Nhắc việc chưa hoàn thành" aria-expanded="false" aria-controls="taskNotificationPanel">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg>
+                            <span id="taskNotificationCount" class="notification-count" hidden></span>
+                        </button>
+                        <section id="taskNotificationPanel" class="notification-panel" aria-label="Công việc chưa hoàn thành" hidden>
+                            <div class="notification-heading"><strong>Việc cần hoàn thành</strong><span id="taskNotificationSummary"></span></div>
+                            <ul id="taskNotificationList" class="notification-list"></ul>
+                            <a class="notification-all-link" href="tasks.html?status=open">Xem tất cả công việc chưa xong</a>
+                        </section>
+                    </div>
+                    <button id="themeButton" class="icon-button" type="button" aria-label="Đổi giao diện" title="Đổi giao diện"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.5 8.5 0 1 0 20.2 15.1Z"/></svg></button>
+                    <button id="installButton" class="icon-button install-button d-none" type="button" aria-label="Cài ứng dụng" title="Cài ứng dụng"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg></button>
+                    <div class="account-menu">
+                        <span id="accountName" class="account-name"></span>
+                        <button id="logoutButton" class="logout-button" type="button">Đăng xuất</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="container app-shell dashboard-app-shell">
+            <section id="overview" class="welcome-row dashboard-hero" aria-label="Chào mừng và dự báo thời tiết">
+                <div id="dashboardHeroTrack" class="dashboard-hero-track">
+                    <div id="dashboardWelcomePanel" class="welcome-copy">
+                        <span class="eyebrow">OFFLINE FIRST · LUÔN SẴN SÀNG</span>
+                        <h1>Chào bạn, <span id="welcomeName">bạn</span> <span class="wave">✦</span></h1>
+                        <p class="hero-subtitle">Chậm rãi một chút, hoàn thành từng việc một.</p>
+                        <div class="today-chip"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><span id="todayLabel"></span></div>
+                    </div>
+                    <section id="dashboardWeatherPanel" class="weather-panel" aria-label="Dự báo thời tiết">
+                        <div class="weather-panel-heading">
+                            <div class="weather-current">
+                                <span id="weatherIcon" class="weather-icon" aria-hidden="true">☁</span>
+                                <div class="weather-current-info">
+                                    <strong id="weatherTemperature">--°</strong>
+                                    <span id="weatherCondition">Chưa có dữ liệu thời tiết</span>
+                                    <small id="weatherLocation">Chọn vị trí hoặc nhập thành phố</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="weatherForecast" class="weather-forecast" aria-live="polite"></div>
+                        <div class="weather-controls">
+                            <button id="weatherLocate" class="weather-locate" type="button">⌖ Vị trí của tôi</button>
+                            <form id="weatherCityForm" class="weather-city-form">
+                                <label class="visually-hidden" for="weatherCity">Nhập thành phố</label>
+                                <input id="weatherCity" type="search" maxlength="80" placeholder="Tên thành phố" autocomplete="off">
+                                <button type="submit" aria-label="Tìm thời tiết thành phố">
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                                        <path d="m16 16 4.2 4.2"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                        <small id="weatherMessage" class="weather-message" role="status" aria-live="polite">Dự báo 3 ngày · Open-Meteo</small>
+                    </section>
+                </div>
+            </section>
+
+            <section class="stats-grid" aria-label="Thống kê công việc">
+                <a class="stat-card stat-card-link" href="tasks.html?status=all" aria-label="Xem tất cả công việc">
+                    <span class="stat-icon teal"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span class="stat-label">Tổng công việc</span><strong id="statTotal">0</strong><small>Nhấn để xem tất cả</small>
+                </a>
+                <a class="stat-card stat-card-link" href="tasks.html?status=done" aria-label="Xem công việc đã hoàn thành">
+                    <span class="stat-icon mint"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span><span class="stat-label">Đã hoàn thành</span><strong id="statDone">0</strong><small id="statProgress">0% hoàn thành · Nhấn để xem</small>
+                </a>
+                <a class="stat-card stat-card-link" href="tasks.html?status=open" aria-label="Xem công việc còn lại">
+                    <span class="stat-icon peach"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="stat-label">Còn lại</span><strong id="statOpen">0</strong><small id="statOverdue">Không có việc trễ hạn</small>
+                </a>
+                <a class="stat-card stat-card-link" href="sync.html?status=sync" aria-label="Xem công việc đang chờ đồng bộ">
+                    <span class="stat-icon blue"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M7 3v14m-4-4 4 4 4-4M17 21V7m-4 4 4-4 4 4"/></svg></span><span class="stat-label">Chờ đồng bộ</span><strong id="statQueue">0</strong><small id="statSyncHint">Nhấn để xem thay đổi đang chờ</small>
+                </a>
+            </section>
+
+            <div id="trangThaiDongBo" class="sync-alert" role="status" aria-live="polite">
+                <span class="sync-alert-icon">↯</span><span id="syncMessage">Dữ liệu được lưu an toàn trên thiết bị.</span>
+                <button id="conflictHelp" class="conflict-help d-none" type="button">Xử lý xung đột</button>
+            </div>
+
+            <section class="card app-card phone-install-card" aria-labelledby="phoneInstallTitle">
+                <div class="card-body phone-install-body">
+                    <div class="phone-install-copy">
+                        <span class="section-icon phone-install-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg></span>
+                        <div>
+                            <span class="eyebrow">DÙNG TRÊN ĐIỆN THOẠI</span>
+                            <h2 id="phoneInstallTitle" class="card-title">Mở ứng dụng trên điện thoại</h2>
+                            <p>Cùng kết nối Wi-Fi với máy tính, mở địa chỉ này trên điện thoại rồi thêm lối tắt vào màn hình chính.</p>
+                        </div>
+                    </div>
+                    <div class="phone-install-link-row">
+                        <label class="visually-hidden" for="phoneAppUrl">Địa chỉ ứng dụng trên mạng Wi-Fi</label>
+                        <input id="phoneAppUrl" class="form-control" type="url" readonly>
+                        <button id="copyPhoneAppUrl" class="btn primary-button" type="button">Sao chép địa chỉ</button>
+                        <button id="phoneInstallButton" class="btn btn-light d-none" type="button">Cài ứng dụng</button>
+                    </div>
+                    <p id="phoneInstallHelp" class="phone-install-help" role="status" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <div class="dashboard-grid">
+                <section class="card app-card overview-actions">
+                    <div class="card-body">
+                        <div class="upcoming-heading">
+                            <div class="section-heading">
+                                <span class="section-icon list-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+                                <div>
+                                    <h2 class="card-title">Công việc cần chú ý</h2>
+                                    <small class="text-muted">Việc quá hạn và sắp đến hạn trong 7 ngày tới</small>
+                                </div>
+                            </div>
+                            <a class="upcoming-all-link" href="tasks.html">Xem tất cả <span aria-hidden="true">→</span></a>
+                        </div>
+                        <ul id="upcomingTaskList" class="upcoming-task-list" aria-live="polite"></ul>
+                        <a class="btn primary-button overview-tasks-link" href="add.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14"/></svg> Thêm công việc</a>
+                    </div>
+                </section>
+                <section class="dashboard-calendar" aria-label="Lịch công việc">
+                    <div class="calendar-heading">
+                        <div>
+                            <span class="dashboard-side-eyebrow">KẾ HOẠCH CỦA BẠN</span>
+                            <h2 id="calendarMonth" class="calendar-month"></h2>
+                        </div>
+                        <div class="calendar-navigation">
+                            <button id="calendarToday" type="button" aria-label="Về hôm nay" title="Về hôm nay">Hôm nay</button>
+                            <button id="calendarPrevious" type="button" aria-label="Tháng trước">‹</button>
+                            <button id="calendarNext" type="button" aria-label="Tháng sau">›</button>
+                        </div>
+                    </div>
+                    <div class="calendar-weekdays" aria-hidden="true">
+                        <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
+                    </div>
+                    <div id="calendarDays" class="calendar-days" role="group" aria-label="Các ngày trong tháng"></div>
+                    <div class="calendar-agenda">
+                        <h3 id="calendarSelectedLabel"></h3>
+                        <ul id="calendarTaskList" aria-live="polite"></ul>
+                    </div>
+                </section>
+            </div>
+            <footer class="app-footer"><span>✦ Một việc một lúc là đủ tốt rồi.</span></footer>
+        </main>
+    </div>
+
+    <div id="toast" class="toast-message" role="status" aria-live="polite"></div>
+    <div id="conflictModal" class="modal-backdrop-custom d-none" role="dialog" aria-modal="true" aria-labelledby="conflictTitle">
+        <div class="conflict-dialog">
+            <span class="stat-icon peach">⚠</span><h2 id="conflictTitle">Có thay đổi trên thiết bị khác</h2>
+            <p id="conflictDescription">Chọn phiên bản bạn muốn giữ.</p>
+            <div class="conflict-versions"><div><small>Trên thiết bị này</small><p id="localVersion"></p></div><div><small>Trên máy chủ</small><p id="remoteVersion"></p></div></div>
+            <div class="conflict-actions"><button id="keepRemote" class="btn btn-light" type="button">Dùng bản máy chủ</button><button id="keepLocal" class="btn primary-button" type="button">Giữ bản trên máy</button></div>
+        </div>
+    </div>
+    <div id="editModal" class="modal-backdrop-custom d-none" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+        <form id="editForm" class="conflict-dialog edit-dialog">
+            <span class="eyebrow">CẬP NHẬT CÔNG VIỆC</span>
+            <h2 id="editTitle">Chỉnh sửa công việc</h2>
+            <label class="field-label" for="editContent">Tên công việc</label>
+            <input id="editContent" class="form-control" type="text" maxlength="1000" required>
+            <label class="field-label" for="editDescription">Mô tả chi tiết <span class="text-muted">(không bắt buộc)</span></label>
+            <textarea id="editDescription" class="form-control task-description-input" maxlength="5000" rows="3"></textarea>
+            <div class="task-fields">
+                <div><label class="field-label" for="editCategory">Phân loại</label>
+                    <select id="editCategory" class="form-select">
+                        <option value="Cá nhân">Cá nhân</option><option value="Công việc">Công việc</option><option value="Học tập">Học tập</option><option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div><label class="field-label" for="editDueDate">Hạn hoàn thành</label><input id="editDueDate" class="form-control" type="date"></div>
+            </div>
+            <label class="reminder-toggle"><input id="editReminder" type="checkbox"><span class="toggle-track"></span><span><strong>Nhắc tôi vào ngày đến hạn</strong><small>Hiện thông báo trên thiết bị này</small></span></label>
+            <div class="conflict-actions"><button id="cancelEdit" class="btn btn-light" type="button">Hủy</button><button class="btn primary-button" type="submit">Lưu thay đổi</button></div>
+        </form>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/core.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker.register("./service-worker.js")
+                    .catch(function (error) { console.error("Không thể đăng ký Service Worker:", error); });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+    "id": "./index.html?app=teal-v2",
+    "name": "Việc cần làm · Quản lý công việc",
+    "short_name": "Việc cần làm",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#f6f7fc",
+    "theme_color": "#0f766e",
+    "description": "Ứng dụng quản lý công việc hỗ trợ làm việc ngoại tuyến và đồng bộ dữ liệu",
+    "icons": [
+        {
+            "src": "images/app-icon-teal-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "images/app-icon-teal-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "images/icon.svg?v=2",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}
